@@ -1,4 +1,6 @@
-import { Table, Button, Badge, Card } from 'react-bootstrap';
+import { Table, Button, Badge, Alert } from 'react-bootstrap';
+import { useContext } from 'react';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 const getMajorBadgeVariant = (major) => {
   switch (major) {
@@ -11,18 +13,20 @@ const getMajorBadgeVariant = (major) => {
 };
 
 const StudentList = ({ students, onEditStudent, onDeleteStudent }) => {
+  const { theme } = useContext(ThemeContext);
+
   if (students.length === 0) {
     return (
-      <Card className="text-center p-5 text-muted">
-        <p>No students found matching your criteria.</p>
-      </Card>
+      <Alert variant="secondary" className="text-center mt-3">
+        No students found matching your criteria.
+      </Alert>
     );
   }
 
   return (
     <div className="table-responsive">
-      <Table bordered hover className="align-middle">
-        <thead className="table-light">
+      <Table variant={theme} bordered hover className="align-middle">
+        <thead className={theme === 'dark' ? 'table-dark' : 'table-light'}>
           <tr>
             <th>ID</th>
             <th>Name</th>

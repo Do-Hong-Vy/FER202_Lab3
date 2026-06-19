@@ -1,16 +1,18 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useEffect } from "react";
-import { Form, Button, Card } from "react-bootstrap";
+import { Form, Button, Card, Alert } from "react-bootstrap";
 
 const StudentForm = ({ onAddStudent, editingStudent, onUpdateStudent }) => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [major, setMajor] = useState("Information Technology");
+  const [error, setError] = useState("");
 
   const clearForm = () => {
     setName("");
     setAge("");
     setMajor("Information Technology");
+    setError("");
   };
 
   useEffect(() => {
@@ -25,19 +27,37 @@ const StudentForm = ({ onAddStudent, editingStudent, onUpdateStudent }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !age) return;
+    
+    const trimmedName = name.trim();
+    if (trimmedName.length < 2 || trimmedName.length > 50) {
+      setError("Student name must be between 2 and 50 characters.");
+      return;
+    }
+
+    if (/\d/.test(name)) {
+      setError("Student name cannot contain numbers.");
+      return;
+    }
+
+    const parsedAge = parseInt(age, 10);
+    if (isNaN(parsedAge) || parsedAge <= 0 || parsedAge > 120) {
+      setError("Please enter a valid age between 1 and 120.");
+      return;
+    }
+
+    setError("");
 
     if (editingStudent) {
       onUpdateStudent({
         ...editingStudent,
-        name,
+        name: trimmedName,
         age: parseInt(age, 10),
         major,
       });
     } else {
       onAddStudent({
         id: Date.now().toString(),
-        name,
+        name: trimmedName,
         age: parseInt(age, 10),
         major,
       });
@@ -51,6 +71,7 @@ const StudentForm = ({ onAddStudent, editingStudent, onUpdateStudent }) => {
         {editingStudent ? "Edit Student" : "Add New Student"}
       </Card.Header>
       <Card.Body>
+        {error && <Alert variant="danger" className="py-2">{error}</Alert>}
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="name">
             <Form.Label>Student Name</Form.Label>
@@ -71,6 +92,7 @@ const StudentForm = ({ onAddStudent, editingStudent, onUpdateStudent }) => {
               onChange={(e) => setAge(e.target.value)}
               placeholder="Enter age"
               min="1"
+              max="120"
               required
             />
           </Form.Group>

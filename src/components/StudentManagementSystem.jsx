@@ -7,7 +7,7 @@ import {
   useContext,
 } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { studentReducer, initialState } from "../reducers/studentReducer";
+import { studentReducer, initialState } from "../hooks/studentReducer";
 import StudentForm from "./StudentForm";
 import FilterBar from "./FilterBar";
 import StudentList from "./StudentList";
@@ -100,7 +100,8 @@ const StudentManagementSystem = () => {
           </Navbar.Brand>
           <Navbar.Collapse className="justify-content-end">
             <Button
-              variant={theme === "light" ? "outline-dark" : "outline-light"}
+              variant={theme === "light" ? "primary" : "light"}
+              className={theme === "dark" ? "text-dark fw-bold" : "fw-bold"}
               onClick={toggleTheme}
             >
               {theme === "light" ? (
