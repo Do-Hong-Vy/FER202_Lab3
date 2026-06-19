@@ -1,18 +1,28 @@
-import React from 'react';
+import { Table, Button, Badge, Card } from 'react-bootstrap';
+
+const getMajorBadgeVariant = (major) => {
+  switch (major) {
+    case 'Information Technology': return 'info';
+    case 'Business Administration': return 'success';
+    case 'Marketing': return 'warning';
+    case 'Software Engineering': return 'primary';
+    default: return 'secondary';
+  }
+};
 
 const StudentList = ({ students, onEditStudent, onDeleteStudent }) => {
   if (students.length === 0) {
     return (
-      <div className="card" style={{ textAlign: 'center', padding: '3rem 1rem' }}>
-        <p style={{ color: 'var(--text-secondary)' }}>No students found matching your criteria.</p>
-      </div>
+      <Card className="text-center p-5 text-muted">
+        <p>No students found matching your criteria.</p>
+      </Card>
     );
   }
 
   return (
-    <div className="card table-container animate-fade-in">
-      <table>
-        <thead>
+    <div className="table-responsive">
+      <Table bordered hover className="align-middle">
+        <thead className="table-light">
           <tr>
             <th>ID</th>
             <th>Name</th>
@@ -24,42 +34,37 @@ const StudentList = ({ students, onEditStudent, onDeleteStudent }) => {
         <tbody>
           {students.map((student) => (
             <tr key={student.id}>
-              <td style={{ fontFamily: 'monospace' }}>{student.id.slice(-6)}</td>
-              <td style={{ fontWeight: 500 }}>{student.name}</td>
+              <td className="text-muted font-monospace">{student.id.slice(-6)}</td>
+              <td className="fw-bold">{student.name}</td>
               <td>{student.age}</td>
               <td>
-                <span style={{
-                  padding: '0.2rem 0.6rem',
-                  borderRadius: '12px',
-                  fontSize: '0.8rem',
-                  backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                  color: 'var(--primary-color)'
-                }}>
+                <Badge bg={getMajorBadgeVariant(student.major)} pill>
                   {student.major}
-                </span>
+                </Badge>
               </td>
               <td>
-                <div className="actions">
-                  <button
-                    className="btn-primary btn-icon"
-                    onClick={() => onEditStudent(student)}
-                    title="Edit Student"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn-danger btn-icon"
-                    onClick={() => onDeleteStudent(student.id)}
-                    title="Delete Student"
-                  >
-                    Delete
-                  </button>
-                </div>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="me-2"
+                  onClick={() => onEditStudent(student)}
+                  title="Edit Student"
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => onDeleteStudent(student.id)}
+                  title="Delete Student"
+                >
+                  Delete
+                </Button>
               </td>
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 };

@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useState, useEffect } from 'react';
 
 export const ThemeContext = createContext();
 
@@ -9,7 +10,7 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem('app-theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-bs-theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
