@@ -11,7 +11,7 @@ const FilterBar = ({
       <Col md={8}>
         <Form.Control
           type="text"
-          placeholder="Search students by name..."
+          placeholder="Search students by name or ID..."
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
         />

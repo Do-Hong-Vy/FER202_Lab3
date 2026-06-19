@@ -1,14 +1,19 @@
-import { Table, Button, Badge, Alert } from 'react-bootstrap';
-import { useContext } from 'react';
-import { ThemeContext } from '../contexts/ThemeContext';
+import { Table, Button, Badge, Alert } from "react-bootstrap";
+import { useContext } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 const getMajorBadgeVariant = (major) => {
   switch (major) {
-    case 'Information Technology': return 'info';
-    case 'Business Administration': return 'success';
-    case 'Marketing': return 'warning';
-    case 'Software Engineering': return 'primary';
-    default: return 'secondary';
+    case "Information Technology":
+      return "info";
+    case "Business Administration":
+      return "success";
+    case "Marketing":
+      return "warning";
+    case "Software Engineering":
+      return "primary";
+    default:
+      return "secondary";
   }
 };
 
@@ -26,7 +31,7 @@ const StudentList = ({ students, onEditStudent, onDeleteStudent }) => {
   return (
     <div className="table-responsive">
       <Table variant={theme} bordered hover className="align-middle">
-        <thead className={theme === 'dark' ? 'table-dark' : 'table-light'}>
+        <thead className={theme === "dark" ? "table-dark" : "table-light"}>
           <tr>
             <th>ID</th>
             <th>Name</th>
@@ -38,7 +43,7 @@ const StudentList = ({ students, onEditStudent, onDeleteStudent }) => {
         <tbody>
           {students.map((student) => (
             <tr key={student.id}>
-              <td className="text-muted font-monospace">{student.id.slice(-6)}</td>
+              <td className="text-muted font-monospace">{student.id}</td>
               <td className="fw-bold">{student.name}</td>
               <td>{student.age}</td>
               <td>

@@ -78,9 +78,10 @@ const StudentManagementSystem = () => {
   // Memoized filtering and searching
   const filteredStudents = useMemo(() => {
     return students.filter((student) => {
-      const matchesSearch = student.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
+      const lowerCaseSearch = searchTerm.toLowerCase();
+      const matchesSearch = 
+        student.name.toLowerCase().includes(lowerCaseSearch) ||
+        student.id.toLowerCase().includes(lowerCaseSearch);
       const matchesFilter =
         filterMajor === "All Majors" || student.major === filterMajor;
       return matchesSearch && matchesFilter;
