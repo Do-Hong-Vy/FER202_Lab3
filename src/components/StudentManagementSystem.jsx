@@ -29,22 +29,25 @@ const StudentManagementSystem = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterMajor, setFilterMajor] = useState("All Majors");
   const [editingStudent, setEditingStudent] = useState(null);
-
-  // Reducer for student data
-  const [students, dispatch] = useReducer(studentReducer, initialState);
-
-  // Load from local storage on mount
-  useEffect(() => {
+  // Initialize state from local storage
+  const initStudents = (initial) => {
     const savedStudents = localStorage.getItem("studentsData");
     if (savedStudents) {
       try {
-        const parsed = JSON.parse(savedStudents);
-        dispatch({ type: "LOAD_STUDENTS", payload: parsed });
+        return JSON.parse(savedStudents);
       } catch (e) {
         console.error("Failed to parse students from localStorage", e);
       }
     }
-  }, []);
+    return initial;
+  };
+
+  // Reducer for student data
+  const [students, dispatch] = useReducer(
+    studentReducer,
+    initialState,
+    initStudents,
+  );
 
   // Save to local storage on change
   useEffect(() => {
@@ -79,7 +82,7 @@ const StudentManagementSystem = () => {
   const filteredStudents = useMemo(() => {
     return students.filter((student) => {
       const lowerCaseSearch = searchTerm.toLowerCase();
-      const matchesSearch = 
+      const matchesSearch =
         student.name.toLowerCase().includes(lowerCaseSearch) ||
         student.id.toLowerCase().includes(lowerCaseSearch);
       const matchesFilter =

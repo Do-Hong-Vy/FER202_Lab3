@@ -27,7 +27,7 @@ const StudentForm = ({ onAddStudent, editingStudent, onUpdateStudent }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const trimmedName = name.trim();
     if (trimmedName.length < 2 || trimmedName.length > 50) {
       setError("Student name must be between 2 and 50 characters.");
@@ -55,13 +55,15 @@ const StudentForm = ({ onAddStudent, editingStudent, onUpdateStudent }) => {
         major,
       });
     } else {
-      onAddStudent({
-        id: Date.now().toString(),
-        name: trimmedName,
-        age: parseInt(age, 10),
-        major,
-      });
-      clearForm();
+      if (window.confirm("Are you sure you want to add this student?")) {
+        onAddStudent({
+          id: Date.now().toString(),
+          name: trimmedName,
+          age: parseInt(age, 10),
+          major,
+        });
+        clearForm();
+      }
     }
   };
 
@@ -71,7 +73,11 @@ const StudentForm = ({ onAddStudent, editingStudent, onUpdateStudent }) => {
         {editingStudent ? "Edit Student" : "Add New Student"}
       </Card.Header>
       <Card.Body>
-        {error && <Alert variant="danger" className="py-2">{error}</Alert>}
+        {error && (
+          <Alert variant="danger" className="py-2">
+            {error}
+          </Alert>
+        )}
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="name">
             <Form.Label>Student Name</Form.Label>
